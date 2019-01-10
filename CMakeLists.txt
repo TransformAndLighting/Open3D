@@ -77,8 +77,8 @@ if (NOT CMAKE_BUILD_TYPE)
         FORCE)
 endif ()
 
-# tnl: set target compile definitions for eigen
-target_compile_definitions (${CMAKE_PROJECT_NAME} PUBLIC EIGEN_DONT_VECTORIZE=1 EIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT=1)
+# tnl: set definitions for eigen
+add_definitions (-DEIGEN_DONT_VECTORIZE=1 -DEIGEN_DISABLE_UNALIGNED_ARRAY_ASSERT=1)
 
 # set include directories
 include_directories(
