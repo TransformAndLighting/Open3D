@@ -318,7 +318,7 @@ void ColorMapOptimization(TriangleMesh& mesh,
                 visiblity_vertex_to_image, option.image_boundary_margin_);
     } else {
         PrintDebug("[ColorMapOptimization] :: Rigid Optimization\n");
-        OptimizeImageCoorRigid(mesh, images_gray, images_dx, images_dy, camera,
+        OptimizeImageCoorRigid(mesh, images_gray, images_dx, images_dy, color_camera,
                 visiblity_vertex_to_image, visiblity_image_to_vertex,
                 proxy_intensity, option);
         SetGeometryColorAverage(mesh, images_color, color_camera,
