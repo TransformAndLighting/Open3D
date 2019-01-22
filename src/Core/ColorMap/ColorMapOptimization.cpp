@@ -277,6 +277,16 @@ void ColorMapOptimization(TriangleMesh& mesh,
         const ColorMapOptimizationOption& option
         /* = ColorMapOptimizationOption()*/)
 {
+    ColorMapOptimization(mesh, images_rgbd, camera, camera, option);
+}
+
+void ColorMapOptimization(TriangleMesh& mesh,
+        const std::vector<std::shared_ptr<RGBDImage>>& images_rgbd,
+        PinholeCameraTrajectory& color_camera,
+        PinholeCameraTrajectory& depth_camera,
+        const ColorMapOptimizationOption& option
+        /* = ColorMapOptimizationOption()*/)
+{
     PrintDebug("[ColorMapOptimization]\n");
     std::vector<std::shared_ptr<Image>> images_gray,
             images_dx, images_dy, images_color, images_depth;
@@ -291,7 +301,7 @@ void ColorMapOptimization(TriangleMesh& mesh,
     std::vector<std::vector<int>> visiblity_image_to_vertex;
     std::tie(visiblity_vertex_to_image, visiblity_image_to_vertex) =
             CreateVertexAndImageVisibility(mesh, images_depth,
-                    images_mask, camera,
+                    images_mask, depth_camera,
                     option.maximum_allowable_depth_,
                     option.depth_threshold_for_visiblity_check_);
 
@@ -301,17 +311,17 @@ void ColorMapOptimization(TriangleMesh& mesh,
         auto warping_uv_ = CreateWarpingFields(images_gray, option);
         auto warping_uv_init_ = CreateWarpingFields(images_gray, option);
         OptimizeImageCoorNonrigid(mesh, images_gray,
-                images_dx, images_dy, warping_uv_, warping_uv_init_, camera,
+                images_dx, images_dy, warping_uv_, warping_uv_init_, color_camera,
                 visiblity_vertex_to_image, visiblity_image_to_vertex,
                 proxy_intensity, option);
-        SetGeometryColorAverage(mesh, images_color, warping_uv_, camera,
+        SetGeometryColorAverage(mesh, images_color, warping_uv_, color_camera,
                 visiblity_vertex_to_image, option.image_boundary_margin_);
     } else {
         PrintDebug("[ColorMapOptimization] :: Rigid Optimization\n");
         OptimizeImageCoorRigid(mesh, images_gray, images_dx, images_dy, camera,
                 visiblity_vertex_to_image, visiblity_image_to_vertex,
                 proxy_intensity, option);
-        SetGeometryColorAverage(mesh, images_color, camera,
+        SetGeometryColorAverage(mesh, images_color, color_camera,
                 visiblity_vertex_to_image, option.image_boundary_margin_);
     }
 }

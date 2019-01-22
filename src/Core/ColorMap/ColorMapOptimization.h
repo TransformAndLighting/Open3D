@@ -85,4 +85,12 @@ void ColorMapOptimization(TriangleMesh& mesh,
         PinholeCameraTrajectory& camera,
         const ColorMapOptimizationOption& option =
         ColorMapOptimizationOption());
+
+void ColorMapOptimization(TriangleMesh& mesh,
+        const std::vector<std::shared_ptr<RGBDImage>>& imgs_rgbd,
+        PinholeCameraTrajectory& color_camera,
+        PinholeCameraTrajectory& depth_camera,
+        const ColorMapOptimizationOption& option =
+        ColorMapOptimizationOption());
+
 }	// namespace open3d
