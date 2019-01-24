@@ -239,6 +239,13 @@ void SetGeometryColorAverage(TriangleMesh& mesh,
             int j = visiblity_vertex_to_image[i][iter];
             unsigned char r_temp, g_temp, b_temp;
             bool valid = false;
+            if ((images_color[j]->num_of_channels_ == 4) && (images_color[j]->bytes_per_channel_ == 1)) {
+                std::tie(valid, r_temp) = QueryImageIntensity<unsigned char>(
+                        *images_color[j], mesh.vertices_[i], camera,
+                        j, 3, image_boundary_margin);
+                if (!valid || (r_temp == 0))
+                    continue;
+            }
             std::tie(valid, r_temp) = QueryImageIntensity<unsigned char>(
                     *images_color[j], mesh.vertices_[i], camera,
                     j, 0, image_boundary_margin);
@@ -283,6 +290,13 @@ void SetGeometryColorAverage(TriangleMesh& mesh,
             int j = visiblity_vertex_to_image[i][iter];
             unsigned char r_temp, g_temp, b_temp;
             bool valid = false;
+            if ((images_color[j]->num_of_channels_ == 4) && (images_color[j]->bytes_per_channel_ == 1)) {
+                std::tie(valid, r_temp) = QueryImageIntensity<unsigned char>(
+                        *images_color[j], mesh.vertices_[i], camera,
+                        j, 3, image_boundary_margin);
+                if (!valid || (r_temp == 0))
+                    continue;
+            }
             std::tie(valid, r_temp) = QueryImageIntensity<unsigned char>(
                     *images_color[j], warping_fields[j],
                     mesh.vertices_[i], camera, j, 0, image_boundary_margin);
